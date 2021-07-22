@@ -1,0 +1,50 @@
+#include<stdlib.h>
+#include<iostream>
+#include<string>
+using namespace std;
+
+void KMP_NEXT(string t,int next[],int m) {
+	next[0] = -1;
+	int i = 0, j = -1;
+	while (i < m) {
+		if (j == -1 || t[i] == t[j]) {
+			i++;
+			j++;
+			next[i] = j;
+		}
+		else {
+			j = next[j];
+		}
+	}
+}
+
+int KMP(string s,string t) {
+	int n = s.length();
+	int m = t.length();
+	int* next = new int[m];
+	KMP_NEXT(t,next,m);
+	int i = 0, j = 0;
+	while (i < n && j < m) {
+		if (j==-1||s[i] == t[j]) {
+			i++;
+			j++;
+		}
+		else {
+			j = next[j];
+		}
+	}
+	if (j == m) {
+		return i - j;
+	}
+	else {
+		return -1;
+	}
+}
+
+int main() {
+	string s = "acabaabaabcacaabc";
+	string t = "aabcac";
+	int indexBegin=KMP(s, t);
+	cout << indexBegin << endl;
+	return 0;
+}
